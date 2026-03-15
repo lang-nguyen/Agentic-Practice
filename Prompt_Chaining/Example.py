@@ -1,28 +1,14 @@
 import os
-
-# from langchain_openai import ChatOpenAI
 from langchain_google_genai import ChatGoogleGenerativeAI
-
-# import google.generativeai as genai
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import StrOutputParser
 
-# For better security, load environment variables from a .env file
 from dotenv import load_dotenv
 
 load_dotenv()
-# Make sure your OPENAI_API_KEY is set in the .env file
-# Initialize the Language Model (using ChatOpenAI is recommended)
 
-# Check gemini model support
-# genai.configure(api_key=os.getenv("GOOGLE_API_KEY"))
+llm = ChatGoogleGenerativeAI(model="gemini-2.5-flash-lite", temperature=0)
 
-# for m in genai.list_models():
-#     if "generateContent" in m.supported_generation_methods:
-#         print(m.name)
-
-# llm = ChatOpenAI(temperature=0)
-llm = ChatGoogleGenerativeAI(model="gemini-2.5-flash", temperature=0)
 # --- Prompt 1: Extract Information ---
 prompt_extract = ChatPromptTemplate.from_template(
     "Extract the technical specifications from the following text:\n\n{text_input}"
@@ -34,6 +20,7 @@ prompt_transform = ChatPromptTemplate.from_template(
 # --- Build the Chain using LCEL ---
 # The StrOutputParser() converts the LLM's message output to a simple string.
 extraction_chain = prompt_extract | llm | StrOutputParser()
+
 # The full chain passes the output of the extraction chain into the 'specifications'
 # variable for the transformation prompt.
 full_chain = (
