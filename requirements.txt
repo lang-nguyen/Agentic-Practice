@@ -4,3 +4,4 @@ langchain-google-genai
 dotenv
 langchain-openai
 langchain-ollama
+crewai
